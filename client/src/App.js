@@ -1,39 +1,56 @@
-import logo from "./logo.svg";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 import "./App.css";
-import { Button } from "@mui/material";
+import Login from "./components/login/Login";
+import Dashboard from "./components/dashboard/Dashboard";
 import axios from "axios";
 
-const login = async (username, password) => {
-  try {
-    let config = {
-      method: "get",
-      url: "http://localhost:3001/api/login",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString(
-          "base64"
-        )}`,
-      },
-    };
-    const response = await axios(config);
-    console.log(response.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 function App() {
+  const [token, setToken] = useState();
+  const handleLogin = async (userBase, stage = null) => {
+    try {
+      let config = {
+        method: "get",
+        url: "http://localhost:3001/api/login",
+        headers: {
+          Authorization: `Basic ${userBase}`,
+        },
+      };
+      const response = await axios(config);
+      if (response.status === 200) {
+        setToken(userBase);
+        localStorage.setItem("token", userBase);
+      } else {
+        setToken(null);
+      }
+    } catch (error) {
+      setToken(stage === "storage" ? null : "error");
+    }
+  };
+
+  useEffect(() => {
+    const tokenValue = localStorage.getItem("token");
+    if (tokenValue !== undefined) {
+      handleLogin(tokenValue, "storage");
+    }
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button fullWidth onClick={() => login("user", "securepassword")}>
-          Click me
-        </Button>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Route
+          exact
+          path="/"
+          render={(props) =>
+            token === null || token === "error" ? (
+              <Login {...props} token={token} handleLogin={handleLogin} />
+            ) : (
+              <Dashboard {...props} token={token} />
+            )
+          }
+        />
+      </div>
+    </Router>
   );
 }
 

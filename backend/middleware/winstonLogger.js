@@ -5,7 +5,7 @@ const {DateTime} = require("luxon")
 const winstonLogger = expressWinston.logger({
     transports: [
       //Creates new logs file for everyday via Luxon
-      new winston.transports.File({ filename: `logs/${DateTime.local().toFormat("yyyy-MM-dd").toString()}.log` }),
+      new winston.transports.File({ filename: `backend/logs/${DateTime.local().toFormat("yyyy-MM-dd").toString()}.log` }),
     ],
     format: winston.format.combine(
       winston.format.colorize(),

@@ -17,7 +17,7 @@ function MovieCard({ movie, token, getDetail }) {
         })
       }
       sx={{ width: 300 }}
-      style={{ margin: "16px" }}
+      style={{ margin: "16px", cursor: "pointer" }}
     >
       <CardMedia
         component="img"

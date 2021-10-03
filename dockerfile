@@ -6,7 +6,8 @@ COPY package-lock.json .
 RUN npm install
 COPY . .
 EXPOSE 3000
-CMD [ "npm","run", "start"]
+EXPOSE 3001
+CMD [ "npm","run", "start_app"]
 
 
 

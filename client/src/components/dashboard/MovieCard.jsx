@@ -4,6 +4,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router";
 
+//Movie card with poster and name that have click that shows the detail in MovieDetail
+
 function MovieCard({ movie, token, getDetail }) {
   const history = useHistory();
   return (

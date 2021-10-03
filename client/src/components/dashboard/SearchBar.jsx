@@ -51,6 +51,8 @@ function SearchBar({ token, searchObj, setSearchObj, setSearching }) {
     page: 1,
   });
 
+  //On load and when Query (params) change in URL fetches data from the server
+
   useEffect(() => {
     async function handleMoviesSearch() {
       setSearching(true);
@@ -77,13 +79,18 @@ function SearchBar({ token, searchObj, setSearchObj, setSearching }) {
     handleMoviesSearch();
   }, [, history.location.search]);
 
+  //On load gets the data from Query (params) and sets them so that we can fetch
+
   useEffect(() => {
     if (history.location.search !== "") {
       setSearchInfo(qs.parse(history.location.search));
     }
   }, []);
 
+  //Fetches data when something changes in our params
+
   useEffect(() => {
+    //OMDb usually returns empty when there is only one letter in "s" parameter
     if (searchInfo.s.length > 1 || searchInfo.y.length === 4) {
       handleSearch();
     }
@@ -94,6 +101,8 @@ function SearchBar({ token, searchObj, setSearchObj, setSearching }) {
       return { ...prevState, [name]: event.target.value };
     });
   };
+
+  //Used for changing params
 
   const handleSearch = () => {
     const searchInfoBetter = {

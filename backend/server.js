@@ -8,20 +8,20 @@ const winstonMiddleware = require("./middleware/winstonLogger");
 const port = 3001;
 const app = express();
 
-app.use(cors({
-  origin:"http://localhost:3000"
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000","http://localhost:5000"]
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const usersObj = {};
-process.env.USERS.split(",").map((user) => {
-  userArray = user.split(":");
-  usersObj[userArray[0]] = userArray[1];
-});
 
 app.use(
   basicAuth({
-    users: usersObj,
+    users: {
+      admin: "adm1nadm1n",
+      user: "securepassword",
+    },
   })
 );
 

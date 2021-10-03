@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/styles";
 import Rating from "@mui/material/Rating";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
@@ -21,6 +23,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
+
+//
 
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
@@ -53,6 +57,12 @@ BootstrapDialogTitle.propTypes = {
 
 function MovieDetail({ token }) {
   const history = useHistory();
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
+  //Used for fetching data from server and if its empty string to not show dialog
+
   const [hash, setHash] = useState(qs.parse(history.location.hash));
   const [movieDetail, setMovieDetail] = useState(null);
   const handleClose = () => {
@@ -60,6 +70,8 @@ function MovieDetail({ token }) {
     history.push({ ...history.location, hash: null });
     setMovieDetail(null);
   };
+
+  //On load and when hash changers (by clicking on MovieCard) fetches the data and shows the (MovieDetail)
 
   useEffect(() => {
     async function handleMovieSearch() {
@@ -104,22 +116,21 @@ function MovieDetail({ token }) {
               <Typography variant="subtitle2">
                 {movieDetail.Director}
               </Typography>
-              <Box display="flex">
-                <Rating
-                  name="imdbRating"
-                  readOnly
-                  max={10}
-                  defaultValue={Number(movieDetail.imdbRating)}
-                  title={`Out of: ${movieDetail.imdbVotes}`}
-                />
-                <Typography
-                  gutterBottom
-                >{`${movieDetail.imdbRating}/10`}</Typography>
-              </Box>
+              <Typography
+                gutterBottom
+              >{`IMDb: ${movieDetail.imdbRating}/10`}</Typography>
+              <Rating
+                name="imdbRating"
+                readOnly
+                max={10}
+                defaultValue={Number(movieDetail.imdbRating)}
+                title={`Out of: ${movieDetail.imdbVotes}`}
+              />
             </BootstrapDialogTitle>
             <DialogContent dividers>
               <img
                 style={{ float: "right" }}
+                height={"80%"}
                 src={`${movieDetail.Poster}?w=164&h=164&fit=crop&auto=format`}
                 alt={`${movieDetail.Title} poster`}
                 loading="lazy"

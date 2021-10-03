@@ -1,5 +1,7 @@
 import Pagination from "@mui/material/Pagination";
 
+//Used for switching pages in Search
+
 function PaginationComponent({ searchObj, searchInfo, setSearchInfo }) {
   const validState = searchObj.Response === "True";
   return (

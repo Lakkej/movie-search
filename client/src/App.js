@@ -28,7 +28,7 @@ function App() {
       setToken(stage === "storage" ? null : "error");
     }
   };
-
+  //Checkes localstorage for login token
   useEffect(() => {
     const tokenValue = localStorage.getItem("token");
     if (tokenValue !== undefined) {
@@ -37,7 +37,7 @@ function App() {
   }, []);
   return (
     <Router>
-      <div className="App">
+      <div className="App">        
         <Route
           exact
           path="/"
